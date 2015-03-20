@@ -1,5 +1,5 @@
 <scalastyle>
- <name>Scalastyle AkkaConsole configuration</name>
+ <name>Scalastyle AkkaShell configuration</name>
  <check level="warning" class="org.scalastyle.file.FileTabChecker" enabled="true"></check>
  <check level="warning" class="org.scalastyle.file.FileLengthChecker" enabled="true">
   <parameters>
