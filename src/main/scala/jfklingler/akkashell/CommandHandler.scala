@@ -2,6 +2,7 @@ package jfklingler.akkashell
 
 trait CommandHandler {
 
+  import scala.concurrent.Future
   import scala.util.matching.Regex
   import akka.io.Tcp.{Write, WriteCommand}
   import akka.util.ByteString
@@ -19,6 +20,9 @@ trait CommandHandler {
     case _ => emptyResponse
   }
 
+  import scala.language.implicitConversions
+  implicit def response2FutureResponse(r: Response): Future[Response] = Future.successful(r)
+
   def handlerGenerator: CommandHandlerGenerator = (_, _) => handler
 
   val responseHandler: CommandResponseHandler = CommandHandler.emptyResponseHandler
@@ -33,20 +37,21 @@ trait CommandHandler {
 
 object CommandHandler {
 
+  import scala.concurrent.Future
   import akka.actor.{ActorRef, ActorRefFactory}
   import akka.io.Tcp
 
   type Response = Tcp.Command
-  type CommandHandler = PartialFunction[String, Response]
+  type CommandHandler = PartialFunction[String, Future[Response]]
   type CommandHandlerGenerator = (ActorRefFactory, ActorRef) => CommandHandler
-  type CommandResponseHandler = PartialFunction[Any, Response]
+  type CommandResponseHandler = PartialFunction[Any, Future[Response]]
 
   val emptyHandler: CommandHandler = EmptyHandler
 
   object EmptyHandler extends CommandHandler {
     def isDefinedAt(x: String): Boolean = false
 
-    def apply(x: String): Response =
+    def apply(x: String): Future[Response] =
       throw new UnsupportedOperationException("Empty handler apply()")
   }
 
@@ -55,7 +60,7 @@ object CommandHandler {
   object EmptyResponseHandler extends CommandResponseHandler {
     def isDefinedAt(x: Any): Boolean = false
 
-    def apply(x: Any): Response =
+    def apply(x: Any): Future[Response] =
       throw new UnsupportedOperationException("Empty response handler apply()")
   }
 

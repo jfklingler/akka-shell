@@ -9,8 +9,10 @@ class ShellConnectionHandler(local: InetSocketAddress,
                              override val handlers: Set[CommandHandler])
     extends Actor with ActorLogging with ShellHandlerRegistry {
 
+  import scala.concurrent.Future
+  import scala.util.{Failure, Success}
   import akka.actor.Terminated
-  import akka.io.Tcp.{Close, CompoundWrite, ConnectionClosed, Received, Write, WriteCommand}
+  import akka.io.Tcp.{Close, Command => TcpCommand, CompoundWrite, ConnectionClosed, Received, Write, WriteCommand}
   import akka.util.ByteString
 
   override def preStart(): Unit = {
@@ -40,6 +42,9 @@ class ShellConnectionHandler(local: InetSocketAddress,
       context.stop(self)
   }
 
+
+  private implicit val ec = context.dispatcher
+
   private def complete: PartialFunction[Any, Unit] = {
     case w: CompoundWrite if w.nonEmpty =>
       w.toIndexedSeq.reverse.foreach(write)
@@ -53,7 +58,16 @@ class ShellConnectionHandler(local: InetSocketAddress,
       write(w)
       writePrompt()
 
-    case x => log.warning(x.toString)
+    // Erm...so, type erasure...need to figure out how to make this type-safe
+    case fc: Future[TcpCommand] => fc.onComplete {
+      case Success(c) => complete(c)
+      case Failure(t) =>
+        val msg = "Command execution failed"
+        log.error(t, msg)
+        complete(Write(ByteString(msg)))
+    }
+
+    case x => log.warning("Unrecognized handler response: {}", x.toString)
   }
 
   private def write(wc: WriteCommand) = connection ! wc
