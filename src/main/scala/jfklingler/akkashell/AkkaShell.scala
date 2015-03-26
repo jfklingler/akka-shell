@@ -1,12 +1,14 @@
 package jfklingler.akkashell
 
-import akka.actor.{Actor, ActorLogging}
+import akka.actor.{ActorRef, Actor, ActorLogging}
 import com.typesafe.config.Config
 
 class AkkaShell(config: Config) extends Actor with ActorLogging with ShellHandlerRegistrar {
 
   import java.net.InetSocketAddress
   import akka.io.{IO, Tcp}
+
+  private val akkaShellConfig = config.getConfig("akka-shell")
 
   override def preStart(): Unit = {
     implicit val actorSystem = context.system
@@ -24,12 +26,23 @@ class AkkaShell(config: Config) extends Actor with ActorLogging with ShellHandle
 
 object AkkaShell {
 
-  import akka.actor.Props
+  import akka.actor.{ActorRefFactory, Props}
+
+  val DefaultConnectionManagerName = "akka-shell"
 
   def props(config: Config): Props = Props(classOf[AkkaShell], config)
+
+  def createConnectionManager(actorRefFactory: ActorRefFactory, config: Config): ActorRef =
+    actorRefFactory.actorOf(AkkaShell.props(config), DefaultConnectionManagerName)
+
+  def registerCommand(cmdHandler: CommandHandler)(implicit actorRefFactory: ActorRefFactory): Unit = {
+    import scala.concurrent.duration._
+    import jfklingler.akkashell.ShellHandlerRegistrar.RegisterCommandHandler
+
+    val timeout = 2.seconds
+    implicit val ec = actorRefFactory.dispatcher
+    actorRefFactory.actorSelection("/user/" + DefaultConnectionManagerName).resolveOne(timeout).onSuccess {
+      case connectionManager => connectionManager ! RegisterCommandHandler(cmdHandler)
+    }
+  }
 }
-
-
-
-
-
