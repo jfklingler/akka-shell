@@ -1,16 +1,18 @@
 
-name := "akka-shell"
-organization := "jfklingler"
-version := "0.1.0-SNAPSHOT"
+name          := "akka-shell"
+organization  := "jfklingler"
+version       := "0.1.0"
+description   := "A pluggable command shell for Akka applications."
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 scalaVersion := "2.11.6"
 
 val akkaV  = "2.3.9"
 
 libraryDependencies ++= Seq(
-  "com.typesafe.akka"          %% "akka-actor"           % akkaV,
-  "org.scalatest"              %% "scalatest"            % "2.2.4"  % "test",
-  "com.typesafe.akka"          %% "akka-testkit"         % akkaV    % "test"
+  "com.typesafe.akka" %% "akka-actor"   % akkaV,
+  "org.scalatest"     %% "scalatest"    % "2.2.4"  % "test",
+  "com.typesafe.akka" %% "akka-testkit" % akkaV    % "test"
 )
 
 scalacOptions ++= Seq(
@@ -23,5 +25,7 @@ scalacOptions ++= Seq(
   "-Yclosure-elim",
   "-Yinline",
   "-Yno-adapted-args",
-  "-encoding",
-  "utf8")
+  "-encoding", "utf8")
+
+bintraySettings
+bintray.Keys.packageLabels in bintray.Keys.bintray := Seq("akka", "scala")

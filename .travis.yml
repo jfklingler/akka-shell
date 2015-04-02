@@ -7,12 +7,6 @@ scala:
 jdk:
   - oraclejdk7
   - oraclejdk8
-  - openjdk6
   - openjdk7
 
 script: sbt ++$TRAVIS_SCALA_VERSION test
-
-notifications:
-  email:
-    recipients:
-      - jfklingler@gmail.com
