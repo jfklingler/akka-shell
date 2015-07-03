@@ -11,6 +11,7 @@ class ShellConnectionHandler(local: InetSocketAddress,
 
   import scala.concurrent.Future
   import scala.util.{Failure, Success}
+  import akka.actor.Actor._
   import akka.actor.Terminated
   import akka.io.Tcp.{Close, Command => TcpCommand, CompoundWrite, ConnectionClosed, Received, Write, WriteCommand}
   import akka.util.ByteString
@@ -45,7 +46,7 @@ class ShellConnectionHandler(local: InetSocketAddress,
 
   private implicit val ec = context.dispatcher
 
-  private def complete: PartialFunction[Any, Unit] = {
+  private def complete: Receive = {
     case w: CompoundWrite if w.nonEmpty =>
       w.toIndexedSeq.reverse.foreach(write)
       writePrompt()

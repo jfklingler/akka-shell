@@ -15,7 +15,7 @@ class AkkaShell(config: Config) extends Actor with ActorLogging with ShellHandle
     IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(akkaShellConfig.getString("interface"), akkaShellConfig.getInt("port")))
   }
 
-  override def receive: Actor.Receive = handleRegister orElse {
+  override def receive: Receive = handleRegister orElse {
     case Tcp.Bound(local) => log.info("Bound to {}", local)
 
     case Tcp.Connected(remote, local) =>
