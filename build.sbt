@@ -26,6 +26,3 @@ scalacOptions ++= Seq(
   "-Yinline",
   "-Yno-adapted-args",
   "-encoding", "utf8")
-
-bintraySettings
-bintray.Keys.packageLabels in bintray.Keys.bintray := Seq("akka", "scala")
