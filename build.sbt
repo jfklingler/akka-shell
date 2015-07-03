@@ -1,8 +1,7 @@
+name         := "akka-shell"
+organization := "jfklingler"
+description  := "A pluggable command shell for Akka applications."
 
-name          := "akka-shell"
-organization  := "jfklingler"
-version       := "0.1.0"
-description   := "A pluggable command shell for Akka applications."
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 scalaVersion := "2.11.7"
