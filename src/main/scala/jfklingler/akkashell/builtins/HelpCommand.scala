@@ -23,7 +23,7 @@ class HelpCommand(cmds: Set[Command]) extends CommandHandler {
     }
 
   private val helpCols = 5
-  private val emptyHelpResponse =
+  private lazy val emptyHelpResponse =
     "Available commands:\n" +
       allCmds.map(_.name).toSeq.sorted.grouped(helpCols).map(_.mkString("\t\t")).mkString("\n") +
       "\nType 'help <command>' for more information."
