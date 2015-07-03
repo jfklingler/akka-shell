@@ -12,7 +12,7 @@ class AkkaShell(config: Config) extends Actor with ActorLogging with ShellHandle
 
   override def preStart(): Unit = {
     implicit val actorSystem = context.system
-    IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(config.getString("interface"), config.getInt("port")))
+    IO(Tcp) ! Tcp.Bind(self, new InetSocketAddress(akkaShellConfig.getString("interface"), akkaShellConfig.getInt("port")))
   }
 
   override def receive: Actor.Receive = handleRegister orElse {
