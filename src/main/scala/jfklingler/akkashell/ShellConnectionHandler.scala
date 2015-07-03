@@ -7,11 +7,10 @@ class ShellConnectionHandler(local: InetSocketAddress,
                              val remote: InetSocketAddress,
                              val connection: ActorRef,
                              override val handlers: Set[CommandHandler])
-    extends Actor with ActorLogging with ShellHandlerRegistry {
+  extends Actor with ActorLogging with ShellHandlerRegistry {
 
   import scala.concurrent.Future
   import scala.util.{Failure, Success}
-  import akka.actor.Actor._
   import akka.actor.Terminated
   import akka.io.Tcp.{Close, Command => TcpCommand, CompoundWrite, ConnectionClosed, Received, Write, WriteCommand}
   import akka.util.ByteString

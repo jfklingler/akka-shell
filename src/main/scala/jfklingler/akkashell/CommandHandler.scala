@@ -21,6 +21,7 @@ trait CommandHandler {
   }
 
   import scala.language.implicitConversions
+
   implicit def response2FutureResponse(r: Response): Future[Response] = Future.successful(r)
 
   def handlerGenerator: CommandHandlerGenerator = (_, _) => handler

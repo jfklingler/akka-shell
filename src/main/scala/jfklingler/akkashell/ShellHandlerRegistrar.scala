@@ -14,5 +14,7 @@ trait ShellHandlerRegistrar {
 }
 
 object ShellHandlerRegistrar {
+
   case class RegisterCommandHandler(handler: CommandHandler)
+
 }
