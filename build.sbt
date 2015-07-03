@@ -7,7 +7,7 @@ licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 scalaVersion := "2.11.7"
 crossScalaVersions := Seq("2.10.5", "2.11.7")
 
-val akkaV  = "2.3.9"
+val akkaV  = "2.3.11"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor"   % akkaV,
