@@ -32,7 +32,7 @@ object AkkaShell {
 
   def props(config: Config): Props = Props(classOf[AkkaShell], config)
 
-  def createConnectionManager(actorRefFactory: ActorRefFactory, config: Config): ActorRef =
+  def createConnectionManager(implicit actorRefFactory: ActorRefFactory, config: Config): ActorRef =
     actorRefFactory.actorOf(AkkaShell.props(config), DefaultConnectionManagerName)
 
   def registerCommand(cmdHandler: CommandHandler)(implicit actorRefFactory: ActorRefFactory): Unit = {

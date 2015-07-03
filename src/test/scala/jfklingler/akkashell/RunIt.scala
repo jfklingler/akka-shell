@@ -6,10 +6,10 @@ object RunIt extends App {
   import com.typesafe.config.ConfigFactory
   import scala.concurrent.duration._
 
-  val config = ConfigFactory.load()
-  val system = ActorSystem("fatTest", config)
+  implicit val config = ConfigFactory.load()
+  implicit val system = ActorSystem("fatTest", config)
 
-  AkkaShell.createConnectionManager(system, config)
+  AkkaShell.createConnectionManager
 
   Thread.sleep(30.seconds.toMillis)
 
