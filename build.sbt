@@ -5,7 +5,8 @@ version       := "0.1.0"
 description   := "A pluggable command shell for Akka applications."
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.7"
+crossScalaVersions := Seq("2.10.5", "2.11.7")
 
 val akkaV  = "2.3.9"
 
