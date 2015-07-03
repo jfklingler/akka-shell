@@ -9,6 +9,7 @@ trait ShellHandlerRegistry {
 
   protected def handleCommand(text: String) = {
     import builtins.{HelpCommand, UnknownCommand}
+
     (handlers.foldLeft(CommandHandler.emptyHandler)((acc, sh) => acc orElse sh.handlerGenerator(context, self))
       orElse new HelpCommand(handlers.flatMap(_.commands)).handler
       orElse UnknownCommand.handler)(text)

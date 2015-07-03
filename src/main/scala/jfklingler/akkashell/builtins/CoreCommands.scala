@@ -11,9 +11,12 @@ object CoreCommands extends CommandHandler {
   override val commands: Seq[Command] = Seq(exit, ping, pingParam)
 
   override val handler: CommandHandler = {
-    case exit.command() => import jfklingler.akkashell.ShellConnectionHandler.CloseConnection
+    case exit.command() =>
+      import jfklingler.akkashell.ShellConnectionHandler.CloseConnection
       CloseConnection
+
     case ping.command() => response("pong")
+
     case pingParam.command(op) => response(op)
   }
 }

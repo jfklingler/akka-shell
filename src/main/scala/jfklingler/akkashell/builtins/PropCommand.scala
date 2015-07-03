@@ -13,7 +13,7 @@ object PropCommand extends CommandHandler {
     case propParam.command(k) if !k.trim.isEmpty =>
       sys.props.get(k) match {
         case Some(v) => response(v)
-        case None => response(s"Property not defined: $k")
+        case None    => response(s"Property not defined: $k")
       }
 
     case prop.command() =>

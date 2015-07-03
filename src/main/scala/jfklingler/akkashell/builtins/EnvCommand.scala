@@ -13,7 +13,7 @@ object EnvCommand extends CommandHandler {
     case envParam.command(k) if !k.trim.isEmpty =>
       sys.env.get(k) match {
         case Some(v) => response(v)
-        case None => response(s"Environment variable not defined: $k")
+        case None    => response(s"Environment variable not defined: $k")
       }
 
     case env.command() =>

@@ -8,6 +8,6 @@ object UnknownCommand extends CommandHandler {
 
   override val handler: CommandHandler = {
     case empty if empty.isEmpty => emptyResponse
-    case unknown => response("command not found: " + unknown.toString)
+    case unknown                => response("command not found: " + unknown.toString)
   }
 }
